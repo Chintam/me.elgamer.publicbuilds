@@ -20,6 +20,8 @@ import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedCuboidRegion;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 
+net.milkbowl.vault.permission
+
 public class ClaimCommand implements CommandExecutor {
 	
 	public ClaimCommand() {
@@ -44,21 +46,22 @@ public class ClaimCommand implements CommandExecutor {
 		Player p = (Player) sender;
 		
 		if (cmd.getName().equalsIgnoreCase("plot")) {
+			switch (getPrimaryGroup("world", p){
+				case "builder":
+					if (createRegion(builderArea, p)) {
+					return true;
+					}				
+			
+				case "apprentice":
+					if (createRegion(apprenticeArea, p)) {
+					return true;
+					}				
+		
+				case "guest":
+					if (createRegion(guestArea, p)) {
+					return true;
+					}
 
-			if (p.hasPermission("group.builder")) {
-				if (createRegion(builderArea, p)) {
-					return true;
-				}
-			}
-			else if (p.hasPermission("group.apprentice")) {
-				if (createRegion(apprenticeArea, p)) {
-					return true;
-				}
-			}
-			else {
-				if (createRegion(guestArea, p)) {
-					return true;
-				}
 			}
 			return true;
 		}
